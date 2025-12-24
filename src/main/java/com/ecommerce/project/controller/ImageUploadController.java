@@ -1,8 +1,6 @@
 package com.ecommerce.project.controller;
 
 import com.ecommerce.project.service.ImageStorageService;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -18,13 +16,11 @@ import java.util.Map;
 @RequestMapping("/api/images")
 @RequiredArgsConstructor
 @Slf4j
-@Tag(name = "Image Upload", description = "Image upload and management endpoints")
 public class ImageUploadController {
 
     private final ImageStorageService imageStorageService;
 
     @PostMapping("/upload")
-    @Operation(summary = "Upload a single image", description = "Upload a single image to Cloudflare R2 storage")
     public ResponseEntity<Map<String, Object>> uploadImage(
             @RequestParam("file") MultipartFile file,
             @RequestParam(value = "folder", required = false, defaultValue = "products") String folder) {
@@ -55,7 +51,6 @@ public class ImageUploadController {
     }
 
     @PostMapping("/upload-multiple")
-    @Operation(summary = "Upload multiple images", description = "Upload multiple images to Cloudflare R2 storage")
     public ResponseEntity<Map<String, Object>> uploadMultipleImages(
             @RequestParam("files") List<MultipartFile> files,
             @RequestParam(value = "folder", required = false, defaultValue = "products") String folder) {
@@ -81,7 +76,6 @@ public class ImageUploadController {
     }
 
     @DeleteMapping("/delete")
-    @Operation(summary = "Delete an image", description = "Delete an image from Cloudflare R2 storage")
     public ResponseEntity<Map<String, Object>> deleteImage(@RequestParam("imageUrl") String imageUrl) {
         try {
             boolean deleted = imageStorageService.deleteImage(imageUrl);
@@ -102,7 +96,6 @@ public class ImageUploadController {
     }
 
     @DeleteMapping("/delete-multiple")
-    @Operation(summary = "Delete multiple images", description = "Delete multiple images from Cloudflare R2 storage")
     public ResponseEntity<Map<String, Object>> deleteMultipleImages(@RequestBody List<String> imageUrls) {
         try {
             boolean allDeleted = imageStorageService.deleteImages(imageUrls);
