@@ -1,3 +1,3 @@
-# Enable .env file loading for local development
-org.springframework.context.ApplicationContextInitializer=\
-com.ecommerce.project.config.DotenvConfig
+# DISABLED - .env file loading for local development
+# org.springframework.context.ApplicationContextInitializer=\
+# com.ecommerce.project.config.DotenvConfig

@@ -32,8 +32,8 @@ public class CorsConfig {
         allPatterns.add("http://localhost:*");
         
         // Hard-coded specific origins for guaranteed access
-        allPatterns.add("https://paribito20.vercel.app");
-        allPatterns.add("https://paribito-backend-production.up.railway.app");
+        allPatterns.add("https://swiftcart-ui.vercel.app/");
+        allPatterns.add("https://swiftcart-backend-x4ku.onrender.com");
         
         // Use allowedOriginPatterns only (supports both exact matches and wildcards)
         configuration.setAllowedOriginPatterns(allPatterns);

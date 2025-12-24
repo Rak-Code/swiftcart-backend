@@ -1,3 +1,10 @@
+/*
+ * DISABLED - DotEnv Configuration
+ * This class was used to load .env files but has been disabled
+ * in favor of using environment variables directly
+ */
+
+/*
 package com.ecommerce.project.config;
 
 import io.github.cdimascio.dotenv.Dotenv;
@@ -35,3 +42,4 @@ public class DotenvConfig implements ApplicationContextInitializer<ConfigurableA
         }
     }
 }
+*/
