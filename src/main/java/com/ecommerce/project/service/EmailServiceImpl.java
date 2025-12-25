@@ -33,6 +33,8 @@ public class EmailServiceImpl implements EmailService {
     @Override
     @Async
     public void sendOrderConfirmationToCustomer(Order order, User user) {
+        log.info("Starting to send order confirmation email to customer: {} for order: {}", 
+                user.getEmail(), order.getId());
         try {
             SimpleMailMessage message = new SimpleMailMessage();
             message.setFrom(fromEmail);
@@ -40,16 +42,22 @@ public class EmailServiceImpl implements EmailService {
             message.setSubject("Order Confirmation - Order #" + order.getId());
             message.setText(buildCustomerEmailContent(order, user));
 
+            log.debug("Sending email from: {} to: {}", fromEmail, user.getEmail());
             mailSender.send(message);
-            log.info("Order confirmation email sent to customer: {}", user.getEmail());
+            log.info("Order confirmation email sent successfully to customer: {} for order: {}", 
+                    user.getEmail(), order.getId());
         } catch (Exception e) {
-            log.error("Failed to send order confirmation email to customer: {}", user.getEmail(), e);
+            log.error("Failed to send order confirmation email to customer: {} for order: {}. Error: {}", 
+                    user.getEmail(), order.getId(), e.getMessage(), e);
+            throw new RuntimeException("Failed to send order confirmation email", e);
         }
     }
 
     @Override
     @Async
     public void sendOrderNotificationToAdmin(Order order, User user) {
+        log.info("Starting to send order notification email to admin: {} for order: {}", 
+                adminEmail, order.getId());
         try {
             SimpleMailMessage message = new SimpleMailMessage();
             message.setFrom(fromEmail);
@@ -57,10 +65,14 @@ public class EmailServiceImpl implements EmailService {
             message.setSubject("New Order Received - Order #" + order.getId());
             message.setText(buildAdminEmailContent(order, user));
 
+            log.debug("Sending admin notification email from: {} to: {}", fromEmail, adminEmail);
             mailSender.send(message);
-            log.info("Order notification email sent to admin: {}", adminEmail);
+            log.info("Order notification email sent successfully to admin: {} for order: {}", 
+                    adminEmail, order.getId());
         } catch (Exception e) {
-            log.error("Failed to send order notification email to admin", e);
+            log.error("Failed to send order notification email to admin: {} for order: {}. Error: {}", 
+                    adminEmail, order.getId(), e.getMessage(), e);
+            throw new RuntimeException("Failed to send order notification email to admin", e);
         }
     }
 

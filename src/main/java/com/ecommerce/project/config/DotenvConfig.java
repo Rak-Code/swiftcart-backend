@@ -1,10 +1,3 @@
-/*
- * DISABLED - DotEnv Configuration
- * This class was used to load .env files but has been disabled
- * in favor of using environment variables directly
- */
-
-/*
 package com.ecommerce.project.config;
 
 import io.github.cdimascio.dotenv.Dotenv;
@@ -16,6 +9,10 @@ import org.springframework.core.env.MapPropertySource;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * DotEnv Configuration - Loads environment variables from .env file
+ * This enables local development without setting system environment variables
+ */
 public class DotenvConfig implements ApplicationContextInitializer<ConfigurableApplicationContext> {
 
     @Override
@@ -37,9 +34,10 @@ public class DotenvConfig implements ApplicationContextInitializer<ConfigurableA
             environment.getPropertySources()
                     .addFirst(new MapPropertySource("dotenvProperties", dotenvMap));
 
+            System.out.println("✅ Loaded " + dotenvMap.size() + " environment variables from .env file");
+
         } catch (Exception e) {
             System.err.println("Warning: Could not load .env file: " + e.getMessage());
         }
     }
 }
-*/

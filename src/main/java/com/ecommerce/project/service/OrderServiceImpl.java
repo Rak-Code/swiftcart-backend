@@ -32,6 +32,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public OrderResponseDTO createOrder(OrderRequestDTO dto) {
+        log.info("Creating order for user: {}", dto.userId());
 
         Order order = new Order();
         order.setUserId(dto.userId());
@@ -41,21 +42,28 @@ public class OrderServiceImpl implements OrderService {
         order.setStatus(Order.Status.pending);
 
         Order saved = orderRepository.save(order);
+        log.info("Order saved with ID: {}", saved.getId());
 
         // Send emails asynchronously
         try {
+            log.info("Looking up user for email sending, userId: {}", dto.userId());
             User user = userRepository.findById(dto.userId())
                     .orElseThrow(() -> new ResourceNotFoundException("User", "id", dto.userId()));
+            log.info("User found for email: {} ({})", user.getFullName(), user.getEmail());
             
             // Send confirmation email to customer
+            log.info("Triggering customer confirmation email for order: {} to: {}", saved.getId(), user.getEmail());
             emailService.sendOrderConfirmationToCustomer(saved, user);
+            log.info("Customer confirmation email method called for order: {}", saved.getId());
             
             // Send notification email to admin
+            log.info("Triggering admin notification email for order: {}", saved.getId());
             emailService.sendOrderNotificationToAdmin(saved, user);
+            log.info("Admin notification email method called for order: {}", saved.getId());
             
-            log.info("Order emails triggered for order: {}", saved.getId());
+            log.info("All order email methods triggered successfully for order: {}", saved.getId());
         } catch (Exception e) {
-            log.error("Failed to send order emails for order: {}", saved.getId(), e);
+            log.error("Failed to trigger order emails for order: {}. Error: {}", saved.getId(), e.getMessage(), e);
             // Don't fail the order creation if email fails
         }
 
