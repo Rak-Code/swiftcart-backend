@@ -21,6 +21,8 @@ target/
 *.iml
 *.ipr
 .env
+.kiro
+
 
 ### NetBeans ###
 /nbproject/private/
